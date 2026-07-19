@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,13 @@ export class User {
   postUserData(payload:any){
     console.log(payload)
     return this.http.post(`${this.baseUrl}/user` , payload).subscribe(
-      (res) => {console.log(res)},
-      (error) => {console.log(error)}
+      (res) => {
+        Swal.fire("Success", "Form submitted successfully", "success");
+      },
+      (error) => {
+        Swal.fire("Error", "Form submission failed", "error");
+        console.log(error)
+      }
     )
   }
 }
