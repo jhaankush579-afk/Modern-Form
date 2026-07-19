@@ -1,0 +1,26 @@
+/* Bootstrap 5.3 + Bootstrap Icons are loaded via CDN in index.html */
+
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button:focus,
+input:focus,
+select:focus {
+  outline: none;
+  box-shadow: none;
+}
