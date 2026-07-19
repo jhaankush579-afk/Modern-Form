@@ -19,6 +19,7 @@ export class User {
       (error) => {
         Swal.fire("Error", "Form submission failed", "error");
         console.log(error)
+        alert(JSON.stringify(error))
       }
     )
   }
