@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 
 import { User } from '../../service/user.service';
+import Swal from 'sweetalert2';
 
 /** A single selectable player option shown as a premium card. */
 interface PlayerOption {
@@ -36,11 +37,9 @@ export class UserFormComponent {
   /** Reactive form group backing every field. */
   readonly form: FormGroup;
 
-  /** Whether the success alert is visible after a valid submit. */
-  readonly submitted = signal(false);
-
   /** Range slider value for live display above the slider. */
   readonly screenTime = signal(6);
+  readonly isLoading = signal(false)
 
   /** Player selection options rendered as premium cards. */
   readonly players: PlayerOption[] = [
@@ -95,27 +94,32 @@ export class UserFormComponent {
     return c.invalid && (c.touched || c.dirty);
   }
 
-  /** Prevent page refresh, log data, show success alert. */
   onSubmit(): void {
+    this.isLoading.set(true)
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     const formData = this.form.value;
-    // console.log('Form Submitted Successfully:', formData);
-    this.userService.postUserData(formData)
-    this.submitted.set(true);
+    this.userService.postUserData(formData).subscribe(
+      (res) => {
+        Swal.fire("Success", "Form submitted successfully", "success");
+        this.isLoading.set(false)
+      },
+      (error) => {
+        Swal.fire("Error", "Form submission failed", "error");
+        console.log(error)
+        alert(JSON.stringify(error))
+        this.isLoading.set(false)
+      }
+    )
+    console.log(this.isLoading())
   }
 
   /** Clears every field and hides the success alert. */
   onReset(): void {
     this.form.reset({ screenTime: 6 });
     this.screenTime.set(6);
-    this.submitted.set(false);
   }
 
-  /** Dismiss the success alert manually. */
-  dismissAlert(): void {
-    this.submitted.set(false);
-  }
 }
